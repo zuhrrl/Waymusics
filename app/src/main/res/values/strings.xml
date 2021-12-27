@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Waymusics</string>
+
+    <!-- Drawer Menu -->
+    <string name="drawer_item_home">Home</string>
+    <string name="drawer_item_top_rated">Top Kangen Band</string>
+    <string name="drawer_item_settings">Bangipul ganteng</string>
+    <string name="toolbar_title">Waymusics</string>
+    <string name="fintech_app_name">Akulaku - Belanja dan...</string>
+    <string name="app_total_recommend">1.5K</string>
+    <string name="fintech_developer_name">Artis: (Maintenance)</string>
+    <string name="fintech_ojk_license">Durasi: (Maintenance)</string>
+    <string name="fintech_app_rating">Rating: 4.5</string>
+    <string name="listen_music_1">Dengarkan</string>
+    <string name="listen_music">Dengarkan</string>
+    <string name="fintech_review_item">Wah ini si fintech mantap banget, bisa ngutang 10jt cuman itu bunganya gede</string>
+    <string name="fintech_user_write_review">Tulis Review</string>
+    <string name="user_review_name">user_review_name</string>
+    <string name="action_search">Seach Favorite Musics</string>
+    <string name="songs">songs</string>
+    <string name="artist">artist</string>
+    <string name="albums">albums</string>
+    <string name="album_artist">album_artist</string>
+    <string name="genres">genres</string>
+
+    <string name="is_music_save">Saved</string>
+</resources>
