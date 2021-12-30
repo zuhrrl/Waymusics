@@ -24,7 +24,7 @@ and this project also me talk to my computer each time!. lol
 - Security patch
 - Well documented
 
-* Client server
+## Client server
 
 - Kotlin and clean code
 - Using pattern for easy and understand soon when need a scale
