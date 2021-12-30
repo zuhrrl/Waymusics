@@ -13,7 +13,7 @@ Feature:
 
 Dear customer yang terhormat, Saya endasnya ngelu! nggarap ngarep mburi kasi mumpluk!
 its almost 3 days for me to solve this hell bugs!.
-and this project also me talk to my computer each time!. lol
+and this project also me talk to my computer each time!. Regards Zuhrul Anam your Teammates!
 
 ## Backend server feature
 
