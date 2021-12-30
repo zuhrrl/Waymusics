@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.mikepenz:fastadapter-extensions-expandable:5.5.1@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/658e0b71e5d6ca0c783a05ffe2329f07/transformed/jetified-fastadapter-extensions-expandable-5.5.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/658e0b71e5d6ca0c783a05ffe2329f07/transformed/jetified-fastadapter-extensions-expandable-5.5.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/658e0b71e5d6ca0c783a05ffe2329f07/transformed/jetified-fastadapter-extensions-expandable-5.5.1/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mikepenz/fastadapter-extensions-expandable/5.5.1/12e0a6c565ec5abaa3d325a766d4041cf6c6a1cf/fastadapter-extensions-expandable-5.5.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mikepenz/fastadapter-extensions-expandable/5.5.1/e45a25a78cf9752ececef941249e2cd2d988213d/fastadapter-extensions-expandable-5.5.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

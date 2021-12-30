@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.mikepenz:fontawesome-typeface:5.9.0.2-kotlin@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/dbced560dc5b53717bcf6eebbf98c713/transformed/jetified-fontawesome-typeface-5.9.0.2-kotlin/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/dbced560dc5b53717bcf6eebbf98c713/transformed/jetified-fontawesome-typeface-5.9.0.2-kotlin/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/dbced560dc5b53717bcf6eebbf98c713/transformed/jetified-fontawesome-typeface-5.9.0.2-kotlin/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mikepenz/fontawesome-typeface/5.9.0.2-kotlin/a12c9673d194f1ab94700634dc850c8807445b3c/fontawesome-typeface-5.9.0.2-kotlin-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mikepenz/fontawesome-typeface/5.9.0.2-kotlin/8e83d1cfb8380f4c2e9c0d0e12bc4ba066bbf819/fontawesome-typeface-5.9.0.2-kotlin-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -4,30 +4,39 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.media.MediaPlayer
+import android.net.Uri
+import android.os.CountDownTimer
+import android.text.Html
+import android.text.Html.FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.core.text.HtmlCompat.fromHtml
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.waymusics.android.Constant
 import com.waymusics.android.R
+import com.waymusics.android.component.adapter.MusicAdapter
 import com.waymusics.android.component.audio.AudioHelper
+import com.waymusics.android.component.builder.MusicBuilder
+import com.waymusics.android.component.network.download.MusicDownloader
+import com.waymusics.android.component.network.model.Music
 import com.waymusics.android.component.network.retro.*
 import com.waymusics.android.component.storage.PermissionHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.util.*
-import android.os.CountDownTimer
-import android.view.View
-import android.widget.Toast
-import com.waymusics.android.component.network.download.MusicDownloader
-import com.waymusics.android.component.network.model.Music
-import java.lang.Exception
 
 
 @SuppressLint("StaticFieldLeak")
@@ -35,8 +44,6 @@ object ModuleHelper {
     var context: Context? = null
     var recyclerView: RecyclerView? = null
     var btnOpenCloseDrawer: ImageView? = null
-    var isReviewFintech: Boolean = false
-    var reviewPackname: String? = null
     var isStreamPlaying: Boolean = false
     var loadingBar: ProgressBar? = null
     var playingStatus: TextView? = null
@@ -45,48 +52,65 @@ object ModuleHelper {
     var musicPlayingAnimation: LottieAnimationView? = null
     var albumIcon: ImageView? = null
     var music: MutableList<Music>? = null
-    var musicAdapterPosition: Int? = null
+    var musicUploadedBy: TextView? = null
+    var isNewMusicSearch: Boolean = false
+    var isSaveLocalBtnClick: Boolean = false
+    var countDownTimer: CountDownTimer? = null
+    var musicAdapter: MusicAdapter? = null
+    var mediaPlayer: MediaPlayer? = null
+    var musicTitlePlay: TextView? = null
+    var musicAlbumPlay: TextView? = null
+    var musicPauseBtn: ImageView? = null
+    var musicDurationPlay: TextView? = null
+    var musicPosition: Int? = null
+    var musicOverlay: CardView? = null
 
-    // update music duration
 
-    fun update() {
-        val timer: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                // the code in the method run
-            }
-
-            override fun onFinish() {}
-        }
-    }
 
     fun updateMusicDuration(mediaPlayer: MediaPlayer?) {
-        object : CountDownTimer(Long.MAX_VALUE, 1000) {
+        countDownTimer = object : CountDownTimer(Long.MAX_VALUE, 1000) {
             @SuppressLint("SetTextI18n")
             override fun onTick(millisUntilFinished: Long) {
                 // the code in the method run
                 if(isStreamPlaying) {
-                    val totalDuration = mediaPlayer?.duration
-                    val currentDuration = mediaPlayer?.currentPosition
-                    val updateDuration = totalDuration?.minus(currentDuration!!)
-                    Log.d("AudioHelper", "Remaining: ${convertMillisecondsToLength(updateDuration!!)}")
+
+                    //Log.d("ModuleHelper", "Mediaplayerstatus: "+mediaPlayer?.isPlaying)
+                    //Log.d("ModuleHelper", "Mediaplayerstatus: "+mediaPlayer?.currentPosition)
+
+
+
 
                     activity?.runOnUiThread {
-                        musicDuration?.text = "Remaining: ${convertMillisecondsToLength(updateDuration!!)}"
+
+                        val totalDuration = mediaPlayer?.duration
+                        val currentDuration = mediaPlayer?.currentPosition
+                        val updateDuration = totalDuration?.minus(currentDuration!!)
+                        //Log.d("AudioHelper", "Remaining: ${convertMillisecondsToLength(updateDuration!!)}")
+
+
+                        musicDurationPlay?.text = "Remaining: ${convertMillisecondsToLength(updateDuration!!)}"
                         if(updateDuration == 0) {
                             cancel()
                         }
                     }
-                } else {
+                }
+                else {
+                    isSaveLocalBtnClick = false
                     cancel()
                 }
 
             }
 
             override fun onFinish() {}
-        }.start()
+        }
+        (countDownTimer as CountDownTimer).start()
 
 
 
+    }
+
+    fun resetCountDown() {
+        countDownTimer?.cancel()
     }
 
     fun getLocalDownloadPath(videoId: String?): String {
@@ -127,24 +151,6 @@ object ModuleHelper {
         return item.substring(0, 15)
     }
 
-    /*fun test() {
-        try {
-            val dl_source = ModuleHelper.getLocalDownloadPath(ModuleHelper.music?.get(position)?.ytVideoId)
-            ModuleHelper.checkFileInServer(music[position].dl_music_name!!, music[position].ytVideoId!!, dl_source, null, false )
-            //ModuleHelper.streamMp3(music[position].dl_music_name!!, music[position].ytVideoId!!, false, null, null)
-            Log.d("MusicAdapter", music[position].ytVideoId!!)
-            holder.btn_listen_text.text = "STOP"
-            holder.music_artist_name.text = "Getting file from server..."
-            ModuleHelper.playingStatus = holder.music_artist_name
-            ModuleHelper.musicDuration = holder.music_length
-
-        } catch (e: Exception) {
-            println(e.toString())
-        }
-    }
-
-     */
-
     fun streamMp3(dl_video_name: String?, yt_video_id: String?, isSaveLocal: Boolean, dl_source: String?, localFileName: String?) {
         val request = ClientRequest()
         request.yt_video_id = yt_video_id
@@ -182,7 +188,8 @@ object ModuleHelper {
         })
     }
 
-    fun checkFileInServer(dl_music_name: String?, yt_video_id: String?, dl_source: String?, localFileName: String?, isSaveLocal: Boolean) {
+    private fun checkFileInServer(dl_music_name: String?, yt_video_id: String?, dl_source: String?, localFileName: String?, isSaveLocal: Boolean) {
+        playingStatus?.text = "Getting file from server..."
         val request = ClientRequest()
         request.yt_video_id = yt_video_id
         val retro = Retro().getRetrofitInstance().create(RetroInterface::class.java)
@@ -194,11 +201,13 @@ object ModuleHelper {
                 val resp = response.body()
                 // we want to detect if response is success
                 if(resp?.message.toString().contains("success")) {
+
                     if(!isSaveLocal) {
                         Log.d("Module Helper", resp?.data?.file_status!!)
                         AudioHelper.playAudio(context, dl_source)
                     }
                     else {
+                        // save to local
                         MusicDownloader().downloadFile(context!!, dl_source, localFileName)
                         Log.d("Module Helper", resp?.data?.file_status!!)
                     }
@@ -225,23 +234,184 @@ object ModuleHelper {
     }
 
     fun saveToLocal(position: Int) {
-        val dl_source = getLocalDownloadPath(music?.get(position)?.ytVideoId)
+        Log.d("Modulehelper", "trying to call saveToLocal()")
+        val dlSource = getLocalDownloadPath(music?.get(position)?.ytVideoId)
         val localFileName = music?.get(position)?.dl_music_name_local
         if(!MusicDownloader().isFileDownloaded(localFileName)) {
             albumIcon?.visibility = View.GONE
             musicPlayingAnimation?.setAnimation(R.raw.save_loading)
             musicPlayingAnimation?.playAnimation()
             musicPlayingAnimation?.visibility = View.VISIBLE
-            checkFileInServer(music?.get(position)?.dl_music_name!!, music!![position].ytVideoId, dl_source, localFileName, true)
+            checkFileInServer(music?.get(position)?.dl_music_name!!, music!![position].ytVideoId, dlSource, localFileName, true)
         }
         else {
             loadingBar?.visibility = View.GONE
+            musicPlayingAnimation?.pauseAnimation()
+            musicPlayingAnimation?.visibility = View.GONE
+            albumIcon?.visibility = View.VISIBLE
             Toast.makeText(context, "$localFileName is available in Storage", Toast.LENGTH_SHORT).show()
             val length = 323000
             Log.d("Musicadapter", convertMillisecondsToLength(length))
             Log.d("Musicadapter", "file is exist dont need download")
         }
     }
+
+    fun initHomepageMusicList(keyword: String?, musicList : MutableList<Music>, musicAdapter: MusicAdapter) {
+        val request = ClientRequest()
+        request.keyword = keyword
+        val retro = Retro().getRetrofitInstance().create(RetroInterface::class.java)
+        retro.getMusicList(request).enqueue(object : Callback<SearchMusicResponse> {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onResponse(
+                call: Call<SearchMusicResponse>,
+                response: Response<SearchMusicResponse>
+            ) {
+                // finally we already get response from backend
+                val resp = response.body()
+                // we want to detect if response is success
+                if(resp?.message.toString().contains("success")) {
+                    loadingBar?.visibility = View.GONE
+
+
+                    if(resp?.data != null) {
+                        for (i in 0 until resp.data.items?.size!!) {
+                            val item = resp.data.items!![i]
+
+                            val TEN_MINUTES = 600000
+                            var musicTitle = if (item.youtube_video_title?.length!! >= 20) substringName(item.youtube_video_title!!) + "..." else item.youtube_video_title!!
+                            var musicTitleFilter = musicTitle.replace("[\\|\\/\\&quot;]".toRegex(), "")
+                            var albumUploadedBy = if (item.youtube_video_upload_by?.length!! >= 15) substringUploadBy(item.youtube_video_upload_by!!) + "..." else item.youtube_video_upload_by!!
+                            var musicLocalName = item?.youtube_video_title!!.replace("[\\|\\/\\&quot;]".toRegex(), "")
+
+                            if(item?.youtube_video_id != null && item.youtube_video_length!! < TEN_MINUTES) {
+                                val musicBuilder = MusicBuilder()
+                                    .setMusicName(musicTitleFilter)
+                                    .setMusicUploadedBy(albumUploadedBy)
+                                    .setDlMusicName(item?.youtube_video_id)
+                                    .setDlMusicNameLocal(musicLocalName)
+                                    .setMusicStreamPath(item?.youtube_video_id)
+                                    .setMusicLength(item?.youtube_video_length)
+                                    .setIsPlaying(false)
+                                    .build()
+                                if(musicBuilder !in musicList) {
+                                    musicList?.add(musicBuilder)
+                                }
+                            }
+
+
+
+
+
+                        }
+
+                    }
+
+                    musicAdapter.notifyDataSetChanged()
+                }
+
+            }
+
+            override fun onFailure(call: Call<SearchMusicResponse>, t: Throwable) {
+                Log.d("Modulehelper", "error ${t.message}")
+            }
+
+        })
+
+    }
+
+
+    // play audio
+    @SuppressLint("SetTextI18n")
+    fun playAudio(position: Int, music: List<Music>) {
+        albumIcon?.visibility = View.GONE
+        musicPlayingAnimation?.visibility = View.VISIBLE
+        musicPlayingAnimation?.playAnimation()
+        musicOverlay?.visibility = View.VISIBLE
+
+
+
+        // checking to our localstorage if file is exist!
+        if (!MusicDownloader().isFileDownloaded(music[position].dl_music_name_local)) {
+            val dlSource = getLocalDownloadPath(music[position].ytVideoId)
+            // checking to our server if file is exist!
+            checkFileInServer(
+                music[position].dl_music_name!!,
+                music[position].ytVideoId!!,
+                dlSource,
+                null,
+                false
+            )
+
+        } else {
+            // playing audio from local file
+            Log.d("Musicadapter", "user have file to listen this music")
+            try {
+                val path = File("/storage/emulated/0/Music/")
+                val localPath =
+                    File(path, "${music[position].dl_music_name_local}-Waymusics.mp3")
+                AudioHelper.playAudio(
+                    context,
+                    localPath.absolutePath.toString()
+                )
+
+
+            } catch (e: Exception) {
+                println(e.toString())
+            }
+        }
+
+    }
+
+    // pause audio
+
+    fun pauseAudio() {
+        if(mediaPlayer != null && mediaPlayer!!.isPlaying) {
+            mediaPlayer!!.pause()
+        }
+    }
+    fun resumeAudio() {
+        if(mediaPlayer != null && !mediaPlayer!!.isPlaying) {
+            mediaPlayer!!.start()
+        }
+    }
+
+    // stop audio
+
+    @SuppressLint("SetTextI18n")
+    fun stopAudio() {
+        resetCountDown()
+        AudioHelper.killMediaPlayer()
+    }
+
+    // fun show Dialog
+    @SuppressLint("WrongConstant")
+    fun showAboutDialog() {
+        val msg = "<p>Thanks for choosing Waymusics, This app is in the Beta version, may sometimes not stable on higher devices!.</p><br><p>License: We are using YouTube Data API to get source. and we are not affiliated with any listed source in this app!</p>"
+        MaterialAlertDialogBuilder(context!!)
+            .setTitle("About Waymusics")
+            .setMessage(fromHtml(msg, FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH))
+            .setNegativeButton("Dismiss") { dialog, which ->
+                dialog.dismiss()
+
+            }
+            .setPositiveButton("Ok") { dialog, which ->
+                dialog.dismiss()
+
+            }
+            .show()
+    }
+
+    fun openPlaystoreMarket(packname: String) {
+        val market = "market://details?id=$packname"
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(market)
+        activity?.startActivity(intent)
+    }
+
+
+
+
+
 
 
 

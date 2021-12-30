@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Waymusic.iml" filepath="$PROJECT_DIR$/.idea/modules/Waymusic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Waymusics.iml" filepath="$PROJECT_DIR$/.idea/modules/Waymusics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Waymusics.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Waymusics.app.iml" />
     </modules>
   </component>
 </project>

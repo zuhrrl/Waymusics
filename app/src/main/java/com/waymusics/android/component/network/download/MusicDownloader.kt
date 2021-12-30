@@ -1,6 +1,9 @@
 package com.waymusics.android.component.network.download
 
 import android.content.Context
+import android.media.MediaScannerConnection
+import android.media.MediaScannerConnection.MediaScannerConnectionClient
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -12,11 +15,10 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.media.MediaScannerConnection
-import android.media.MediaScannerConnection.MediaScannerConnectionClient
-import android.net.Uri
-import android.media.MediaPlayer
-import java.io.*
+import java.io.BufferedOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 
 class MusicDownloader {
@@ -62,16 +64,15 @@ class MusicDownloader {
                                 file.toString()
                             ), null
                         ) { path: String?, uri: Uri? -> }
+
                         ModuleHelper.activity?.runOnUiThread {
-                            ModuleHelper.loadingBar?.visibility = View.GONE
                             Toast.makeText(ModuleHelper.context, filename+" is ${ModuleHelper.context!!.getString(
                                 R.string.is_music_save)}", Toast.LENGTH_SHORT).show()
 
-                            // hide loading
                             ModuleHelper.albumIcon?.visibility = View.VISIBLE
-                            ModuleHelper.musicPlayingAnimation?.setAnimation(R.raw.music_playing)
-                            ModuleHelper.musicPlayingAnimation?.pauseAnimation()
                             ModuleHelper.musicPlayingAnimation?.visibility = View.GONE
+                            ModuleHelper.musicPlayingAnimation?.pauseAnimation()
+
                         }
 
 

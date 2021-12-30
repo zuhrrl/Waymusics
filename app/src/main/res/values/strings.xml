@@ -3,20 +3,24 @@
 
     <!-- Drawer Menu -->
     <string name="drawer_item_home">Home</string>
-    <string name="drawer_item_top_rated">Top Kangen Band</string>
-    <string name="drawer_item_settings">Bangipul ganteng</string>
+    <string name="drawer_item_top_rated">Most Popular</string>
+    <string name="drawer_item_feedback">Love Waymusics</string>
+    <string name="drawer_item_about">About Waymusics</string>
+    <string name="drawer_item_exit">Exit Waymusics</string>
+    <string name="drawer_item_version">Version 1.0.0-Beta</string>
+
+
     <string name="toolbar_title">Waymusics</string>
-    <string name="fintech_app_name">Akulaku - Belanja dan...</string>
-    <string name="app_total_recommend">1.5K</string>
-    <string name="fintech_developer_name">Artis: (Maintenance)</string>
-    <string name="fintech_ojk_license">Durasi: (Maintenance)</string>
-    <string name="fintech_app_rating">Rating: 4.5</string>
+    <string name="fintech_app_name" />
+    <string name="app_total_recommend" />
+    <string name="fintech_developer_name" />
+    <string name="fintech_ojk_license" />
+    <string name="fintech_app_rating" />
     <string name="listen_music_1">Dengarkan</string>
     <string name="listen_music">Dengarkan</string>
-    <string name="fintech_review_item">Wah ini si fintech mantap banget, bisa ngutang 10jt cuman itu bunganya gede</string>
     <string name="fintech_user_write_review">Tulis Review</string>
     <string name="user_review_name">user_review_name</string>
-    <string name="action_search">Seach Favorite Musics</string>
+    <string name="action_search">Search Favorite Musics</string>
     <string name="songs">songs</string>
     <string name="artist">artist</string>
     <string name="albums">albums</string>
@@ -24,4 +28,6 @@
     <string name="genres">genres</string>
 
     <string name="is_music_save">Saved</string>
+    <string name="music_title_play" />
+    <string name="_1_0_0_beta">1.0.0-Beta</string>
 </resources>

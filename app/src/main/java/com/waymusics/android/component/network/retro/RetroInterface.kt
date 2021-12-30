@@ -9,7 +9,7 @@ import retrofit2.http.*
 @Keep
 interface RetroInterface {
 
-    // get all fintech app
+    // get all musics lists
     @POST("backend/get/musics")
     fun getMusicList(@Body clientRequest: ClientRequest
     ) : Call<SearchMusicResponse>

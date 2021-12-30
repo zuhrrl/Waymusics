@@ -7,7 +7,8 @@ data class MusicBuilder(var musicName: String? = null,
                         var dlMusicNameLocal: String? = null,
                         var ytVideoId: String? = null,
                         var ytVideoUploadBy: String? = null,
-                        var ytVideoLength: Int? = null) {
+                        var ytVideoLength: Int? = null,
+var isPlaying: Boolean = false) {
 
     fun setMusicName(value: String?): MusicBuilder {
         this.musicName = value
@@ -38,8 +39,13 @@ data class MusicBuilder(var musicName: String? = null,
         this.ytVideoLength = value
         return this
     }
+    fun setIsPlaying(value: Boolean): MusicBuilder {
+        this.isPlaying = value
+        return this
+    }
+
 
     fun build(): Music {
-        return Music(musicName, ytVideoUploadBy, dlMusicName, dlMusicNameLocal, ytVideoId, ytVideoLength)
+        return Music(musicName, ytVideoUploadBy, dlMusicName, dlMusicNameLocal, ytVideoId, ytVideoLength, isPlaying)
     }
 }
