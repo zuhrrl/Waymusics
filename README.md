@@ -18,7 +18,7 @@ and this project also me talk to my computer each time!. lol
 ## Backend server feature
 
 - Coded with javascript (NodeJS)
-- Can accessed by muli client. (Easy to scale when you need a multi platform app!)
+- Can accessed by multi client. (Easy to scale when you need a multi platform app!)
 - Powerful caching (to reduce latency/delay)
 - Database intergrated
 - Security patch
