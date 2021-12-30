@@ -15,7 +15,7 @@ Dear customer yang terhormat, Saya endasnya ngelu! nggarap ngarep mburi kasi mum
 its almost 3 days for me to solve this hell bugs!.
 and this project also me talk to my computer each time!. lol
 
-* Backend server feature
+## Backend server feature
 
 - Coded with javascript (NodeJS)
 - Can accessed by muli client. (Easy to scale when you need a multi platform app!)
